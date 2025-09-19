@@ -1,4 +1,6 @@
 import { useState } from "react";
+import JSConfetti from "js-confetti";
+
 import Tickets from "./tickets";
 import booking from "../constants/booking.json";
 
@@ -7,6 +9,7 @@ export type SelectedItem = {
   price: number;
   seats: string[];
 };
+const confetti = new JSConfetti();
 
 export default function Bookings() {
   const [showTime, setShowTime] = useState(booking.timings[1]);
@@ -41,6 +44,10 @@ export default function Bookings() {
     });
   };
 
+  const handlePay = () => {
+    confetti.addConfetti();
+  };
+
   const price = selected.reduce(
     (acc, cur) => acc + cur.price * cur.seats.length,
     0
@@ -70,7 +77,10 @@ export default function Bookings() {
           ))}
 
           <div className={`flex ml-auto ${price ? "" : "invisible"}`}>
-            <button className="bg-green-700 text-lg text-white cursor-pointer px-4 py-2 rounded-lg">
+            <button
+              className="bg-green-700 text-lg text-white cursor-pointer px-4 py-2 rounded-lg"
+              onClick={handlePay}
+            >
               Pay ₹ {price}
             </button>
           </div>
